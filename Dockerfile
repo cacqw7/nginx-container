@@ -1,18 +1,10 @@
-# Dockerfile for installing and running Nginx
+# nginx as a frontend for a Rails application
+FROM nginx
 
-# Select ubuntu as the base image
-FROM ubuntu
+ADD nginx.conf /etc/nginx/nginx.conf
+ADD default /etc/nginx/default.site
 
-# Install nginx
-RUN apt-get update
-RUN apt-get install -y nginx
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
-# Add configuration files in repository to filesystem
-ADD config/nginx-sites.conf /etc/nginx/sites-enabled/default
-
-# Publish port 80
 EXPOSE 80
+EXPOSE 443
 
-# Start nginx when container starts
-ENTRYPOINT /usr/sbin/nginx
+CMD ["nginx", "-g", "daemon off;"]
